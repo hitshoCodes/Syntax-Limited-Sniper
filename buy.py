@@ -25,7 +25,7 @@ def process_new_ids():
     driver = webdriver.Chrome(options=options)
 
     cookie_name = ".ROBLOSECURITY"
-    cookie_value = "chy0WsrbmGHJBdYaUTIGRz9h4SyYPuaCPImdYulrrfRwtdU6TbEf6mBJwTy3wrDMp6l24VLczxdY8jC0YsRcq0WXk0sBb6AWZTmnmV4WxfbgEFsb5BaxUg0VdD6x7EwEmU55GE3PTDsZQpjhSIPueYdCRSwSlm1yFOlCn8JDjMJYE6l3YSDdi7HZJYfi1sO1jEvCy6RmjCU2bVgsDYMT4x8izvlwpQ7Ohd23UJrNlH9yxFjzsVxmZK1opFg5JqNDnSG7GE0djgdAVzA5v5ioikK2JDLP5Gjkr13HtlU8XJBwj1Lt9WcUKbvUudl0Sn1HUPZfKbrGtm8raYg1RLjUgnsCV7AbwiwdyBL4cbsgHeJ5FwrFzCI7Jb5totwHTY08fwnYdYkoyIaKaFyYhCVcwcyECNiwAtfS02LyvqrzjkLqXWLZj9K9fVaMq0ghpErz79pMSxrlKMlNJPloncJS0Ah6IwBmFt7BkiVWb9BgaxLYiVWRtOTIxxrpm1TSh03n"
+    cookie_value = "COOKIE HERE"
 
     driver.get("https://www.syntax.eco")
 
