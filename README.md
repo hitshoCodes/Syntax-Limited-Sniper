@@ -1,6 +1,6 @@
 # 🚀 Automatic Syntax Limited Sniper
 
-**Automatic Syntax Limited Sniper** is an advanced Python script designed for skilled users who are well-versed in Python programming. This tool automates the process of sniping limited items in your favorite online marketplace. It comprises two main components: an autosearch module and a buyer module. The autosearch module continuously monitors the marketplace for newly listed limited items, while the buyer module efficiently purchases the desired items. Please note that this tool does not have a graphical user interface (GUI) because, after extensive coding, we decided to focus on functionality over aesthetics. 
+**Automatic Syntax Limited Sniper** is an advanced Python script designed for skilled users who are well-versed in Python programming. This tool automates the process of sniping limited items in your favorite online marketplace. It comprises two main components: an autosearch module and a buyer module. The autosearch module continuously monitors the marketplace for newly listed limited items, while the buyer module efficiently purchases the desired items. Please note that this tool does not have a graphical user interface (GUI) because, after extensive coding, we decided to focus on functionality over aesthetics.
 
 ## 🌟 Key Features
 
@@ -10,11 +10,17 @@
 
 - **Customization**: You can configure the tool to target specific limited items and set purchasing rules.
 
+## ❗️ Important Note
+
+Please be aware that this tool is specifically designed to work with the website [Syntax.eco](https://www.syntax.eco/) and requires Chromium to function.
+
 ## 🚀 Getting Started
 
 Before diving into the setup, ensure that you have the following prerequisites:
 
 - Python 3.x installed on your system.
+
+- Chromium installed on your system.
 
 ### Configuration
 
@@ -65,3 +71,5 @@ This tool is provided for educational and research purposes only. It is essentia
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 Elevate your limited item sniping game with Automatic Syntax Limited Sniper! If you have the skills and expertise in Python, this tool can help you secure those rare items with ease. Happy sniping! 🎯🛍️
+
+Please ensure that you have the necessary permissions and rights to use this tool on the specified website and that you use it responsibly and ethically.
