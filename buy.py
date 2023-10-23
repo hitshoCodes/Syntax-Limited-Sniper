@@ -11,7 +11,6 @@ def process_new_ids():
     with open('bought.txt', 'r') as file:
         bought_ids = file.read().splitlines()
 
-    # Filter out the item IDs that are already in the 'bought' list
     new_item_ids = [id for id in item_ids if id not in bought_ids]
 
     if not new_item_ids:
