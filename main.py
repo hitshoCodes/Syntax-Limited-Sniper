@@ -11,7 +11,6 @@ import threading
 import datetime
 import socket
 
-# Read settings from the JSON file
 with open('settings.json', 'r') as settings_file:
     settings = json.load(settings_file)
 
@@ -42,7 +41,6 @@ def check_buyacc():
         if response.status_code == 200:
             data = response.json()
 
-            # Extract and set the account name
             username = data.get("data", {}).get("username")
             if username:
                 account = username
@@ -51,7 +49,6 @@ def check_buyacc():
     except requests.exceptions.RequestException as e:
         account = "None"
 
-# Call the function to check the account name once
 check_buyacc()
 
 while ANONYMOUS == True:
@@ -69,7 +66,6 @@ def check_searchacc():
         if response.status_code == 200:
             data = response.json()
 
-            # Extract and set the account name
             username = data.get("data", {}).get("username")
             if username:
                 autosearch_status = "Connected"
@@ -82,14 +78,11 @@ def update_autosearch():
     check_searchacc()
     time.sleep(600)
 
-# URL for scraping (Removed from settings)
 url = "https://www.syntax.eco/catalog/?sort=3&catergory=5"
 
-# Initialize a list for logs
 logs = []
-current_id = None  # Variable to store the current ID
+current_id = None
 
-# Add this line to open the logs.txt file for writing
 logs_file = open('logs.txt', 'w')
 
 def log(message):
@@ -97,7 +90,6 @@ def log(message):
     log_entry = f"{message}"
     logs.append(log_entry)
     
-    # Write the log entry to the logs.txt file
     logs_file.write(current_time + log_entry + '\n')
     logs_file.flush()
 
@@ -120,7 +112,6 @@ def scrape_item_links():
 
 def is_internet_available():
     try:
-        # Try connecting to a well-known public domain (e.g., google.com) to check internet connectivity.
         socket.create_connection(("www.google.com", 80))
         return True
     except OSError:
@@ -131,7 +122,6 @@ def process_new_ids():
     global current_id, checks, CHECK_TIME, bought, errors, last_bought, last_detected, DISCORD_WEBHOOK
 
     while True:
-        # Check internet connectivity
         while not is_internet_available():
             print("No internet connection. Waiting for 1 minute before checking again...")
             time.sleep(60)
@@ -141,8 +131,8 @@ def process_new_ids():
 
         new_item_links = scrape_item_links()
 
-        if new_item_links is not None:  # Check if new_item_links is not None
-            current_id = new_item_links[0]  # Update the current ID variable
+        if new_item_links is not None:
+            current_id = new_item_links[0]
 
             with open('bought.txt', 'r') as file:
                 bought_ids = file.read().splitlines()
@@ -154,7 +144,7 @@ def process_new_ids():
                 options.add_argument("--start-maximized")
                 options.add_argument(f"user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36")
 
-                driver = webdriver.Chrome(options=options)  # Define the driver outside the try block
+                driver = webdriver.Chrome(options=options)
 
                 cookie_name = ".ROBLOSECURITY"
 
@@ -215,10 +205,9 @@ def process_new_ids():
                     with open('bought.txt', 'a') as bought_file:
                         bought_file.write(id + '\n')
 
-                # Update last_detected with the name of the detected ID
                 last_detected = get_item_name(id)
 
-                driver.quit()  # Move the driver.quit() inside the try block
+                driver.quit()
 
 
 
