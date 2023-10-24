@@ -1,6 +1,6 @@
 # 🚀 Automatic Syntax Limited Sniper
 
-**Automatic Syntax Limited Sniper** is an advanced Python script designed for skilled users who are well-versed in Python programming. This tool automates the process of sniping limited items in your favorite online marketplace. It comprises two main components: an autosearch module and a buyer module. The autosearch module continuously monitors the marketplace for newly listed limited items, while the buyer module efficiently purchases the desired items. Please note that this tool does not have a graphical user interface (GUI) because, after extensive coding, we decided to focus on functionality over aesthetics.
+**Automatic Syntax Limited Sniper** is a Python script designed for sniping limited items on [Syntax.eco](https://www.syntax.eco/). This tool streamlines the sniping process, making it accessible for both beginners and experienced users. It comprises two main components: an autosearch module and a buyer module. The autosearch module continuously monitors the marketplace for newly listed limited items, while the buyer module efficiently purchases the desired items.
 
 ## 🌟 Key Features
 
@@ -8,7 +8,7 @@
 
 - **Buyer Module**: Automatically purchases limited items when they become available, based on predefined criteria.
 
-- **Customization**: You can configure the tool to target specific limited items and set purchasing rules.
+- **Customization**: Configure the tool using a simple `settings.json` file to target specific limited items and set purchasing rules.
 
 ## ❗️ Important Note
 
@@ -16,51 +16,41 @@ Please be aware that this tool is specifically designed to work with the website
 
 ## 🚀 Getting Started
 
-Before diving into the setup, ensure that you have the following prerequisites:
+To get started with Automatic Syntax Limited Sniper, follow these simple steps:
 
-- Python 3.x installed on your system.
+1. Install the necessary Python packages by running:
 
-- Chromium installed on your system.
-
-### Configuration
-
-To set up both the autosearch module and the buyer module, you need to edit the `autosearch.py` and `buyer.py` files and insert your cookie value. Here's how you can do it:
-
-1. Open the `autosearch.py` file using a text editor of your choice.
-
-2. Look for the following line in the code:
-
-```python
-cookie_value = "your_cookie_here"
+```bash
+pip install -r requirements.txt
 ```
 
-3. Replace `"your_cookie_here"` with your actual marketplace cookie value. You can typically find your cookie in your browser's developer tools after logging into the marketplace. It's essential to keep this value confidential.
+2. Install Chromium on your system.
 
-4. Open the `buyer.py` file using a text editor.
+3. Open the `settings.json` file using a text editor.
 
-5. Locate the following line:
+4. Customize the settings based on your preferences:
 
-```python
-cookie_value = "your_cookie_here"
+```json
+{
+  "BUY_COOKIE": "COOKIE HERE",
+  "AUTOSEARCH_COOKIE": "COOKIE HERE",
+  "HIDE_ACCOUNT_NAME": false,
+  "DISCORD_WEBHOOK": "WEBHOOK HERE",
+  "CHECK_TIME": 1
+}
 ```
 
-6. Replace `"your_cookie_here"` with your actual marketplace cookie value.
+5. Save your changes in the `settings.json` file.
 
 ### Usage
 
-1. Run the autosearch module:
+1. Run the program:
 
 ```bash
-python autosearch.py
+python main.py
 ```
 
-2. Run the buyer module:
-
-```bash
-python buyer.py
-```
-
-Please note that running these modules requires a deep understanding of the Python programming language, as well as knowledge of web scraping and automation techniques. The code is designed for educational purposes, and using it for unethical activities is strongly discouraged.
+That's it! You don't need to touch the `main.py` file unless you want to make improvements to the program. The simplified setup allows beginners to start sniping limited items with ease.
 
 ## ✨ Disclaimer
 
@@ -70,6 +60,4 @@ This tool is provided for educational and research purposes only. It is essentia
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-Elevate your limited item sniping game with Automatic Syntax Limited Sniper! If you have the skills and expertise in Python, this tool can help you secure those rare items with ease. Happy sniping! 🎯🛍️
-
-Please ensure that you have the necessary permissions and rights to use this tool on the specified website and that you use it responsibly and ethically.
+Elevate your limited item sniping game with Automatic Syntax Limited Sniper! Happy sniping! 🎯🛍️
