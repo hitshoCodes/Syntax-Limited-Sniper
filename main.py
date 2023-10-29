@@ -5,8 +5,10 @@ import os
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from urllib.parse import urlparse
 import threading
 import datetime
 import socket
@@ -14,6 +16,7 @@ import socket
 with open('settings.json', 'r') as settings_file:
     settings = json.load(settings_file)
 
+version = "2.0.0"
 AUTOSEARCH_COOKIE = settings["AUTOSEARCH_COOKIE"]
 BUY_COOKIE = settings["BUY_COOKIE"]
 CHECK_TIME = settings["CHECK_TIME"]
@@ -36,7 +39,7 @@ def check_buyacc():
     }
     try:
         response = requests.get(account_api, headers=requests_headers)
-        response.raise_for_status()  # Check for request errors
+        response.raise_for_status()
 
         if response.status_code == 200:
             data = response.json()
@@ -51,7 +54,7 @@ def check_buyacc():
 
 check_buyacc()
 
-while ANONYMOUS == True:
+if ANONYMOUS == True:
     account = "Hidden"
 
 def check_searchacc():
@@ -61,7 +64,7 @@ def check_searchacc():
     }
     try:
         response = requests.get(account_api, headers=requests_headers)
-        response.raise_for_status()  # Check for request errors
+        response.raise_for_status()
 
         if response.status_code == 200:
             data = response.json()
@@ -78,7 +81,11 @@ def update_autosearch():
     check_searchacc()
     time.sleep(600)
 
-url = "https://www.syntax.eco/catalog/?sort=3&catergory=5"
+def update_account():
+    check_buyacc()
+    time.sleep(600)
+
+url = "https://www.syntax.eco/catalog/?sort=3"
 
 logs = []
 current_id = None
@@ -107,8 +114,7 @@ def scrape_item_links():
 
         return links
     except requests.exceptions.RequestException as e:
-        log("    \033[0m[\033[31m!\033[0m] \033[38;5;69mInternet connection was lost")
-        time.sleep(10)
+        pass
 
 def is_internet_available():
     try:
@@ -119,13 +125,13 @@ def is_internet_available():
     return False
 
 def process_new_ids():
-    global current_id, checks, CHECK_TIME, bought, errors, last_bought, last_detected, DISCORD_WEBHOOK
+    global current_id, checks, CHECK_TIME, bought, errors, last_bought, last_detected, DISCORD_WEBHOOK, version, logs, item_name
 
     while True:
         while not is_internet_available():
-            print("No internet connection. Waiting for 1 minute before checking again...")
+            log("    \033[0m[\033[31m!\033[0m] \033[38;5;69mInternet connection was lost")
             time.sleep(60)
-        
+
         time.sleep(CHECK_TIME)
         checks = checks + 1
 
@@ -158,7 +164,7 @@ def process_new_ids():
 
                 try:
                     take_one_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'a.btn.btn-primary.fw-bold.w-100.btn-sm.purchase-button')))
-                  
+
                     take_one_button.click()
 
                     log(f"    \033[0m[\033[31m!\033[0m] \033[38;5;69mAutosearch detected {id}")
@@ -167,34 +173,36 @@ def process_new_ids():
 
                     purchase_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, 'purchase-modal-btn')))
 
-                    purchase_button.click()
+                    item_name = parse_item_name_from_url(driver.current_url)
 
-                    log(f"    \033[0m[\033[32m+\033[0m] \033[38;5;69mSuccessfully bought {id}")
-                    bought = bought + 1
+                    if item_name is not None and ("Dominus" in item_name or "Valk" in item_name or "Federation" in item_name or "Eyes of" in item_name or "of the Night" in item_name or "Egg" in item_name or "Pwnage" in item_name or "Shaggy" in item_name or "sekkar" in item_name or "Sparkle Time" in item_name):
+                        purchase_button.click()
+                        log(f"    \033[0m[\033[32m+\033[0m] \033[38;5;69mSuccessfully bought {id}")
+                        bought = bought + 1
 
-                    last_bought = get_item_name(id)
+                        last_bought = item_name
 
-                    webhook_url = DISCORD_WEBHOOK
+                        webhook_url = DISCORD_WEBHOOK
 
-                    embed = {
-                        "title": "New Snipe!",
-                        "description": f"Account: {account}\nPurchased: [{last_bought}](https://syntax.eco/catalog/{id}/hitshoCodes)",
-                        "color": 7506394,
-                        "footer": {
-                            "text": f"hitshoCodes Syntax Sniper v{version}"
+                        embed = {
+                            "title": "New Snipe!",
+                            "description": f"`Account:` {account}\n`Purchased:` [{last_bought}](https://syntax.eco/catalog/{id}/hitshoCodes)",
+                            "color": 7506394,
+                            "footer": {
+                                "text": f"hitshoCodes Syntax Sniper v{version}"
+                            }
                         }
-                    }
 
-                    payload = {
-                        "username": "Syntax Sniper",
-                        "avatar_url": "https://i.ibb.co/ft4Ck3s/favicon-1.png",
-                        "embeds": [embed]
-                    }
+                        payload = {
+                            "username": "Syntax Sniper",
+                            "avatar_url": "https://i.ibb.co/ft4Ck3s/favicon-1.png",
+                            "embeds": [embed]
+                        }
 
-                    if webhook_url:
-                        response = requests.post(webhook_url, data=json.dumps(payload), headers={"Content-Type": "application/json"})
-                        if not response.status_code == 204:
-                            log(f"    \033[0m[\033[31m!\033[0m] \033[38;5;69mFailed to send the webhook")
+                        if webhook_url:
+                            response = requests.post(webhook_url, data=json.dumps(payload), headers={"Content-Type": "application/json"})
+                            if not response.status_code == 204:
+                                log(f"    \033[0m[\033[31m!\033[0m] \033[38;5;69mFailed to send the webhook")
 
                     with open('bought.txt', 'a') as bought_file:
                         bought_file.write(id + '\n')
@@ -205,32 +213,25 @@ def process_new_ids():
                     with open('bought.txt', 'a') as bought_file:
                         bought_file.write(id + '\n')
 
-                last_detected = get_item_name(id)
+                last_detected = item_name
 
                 driver.quit()
 
-
-
-def get_item_name(id):
-    item_api = f"https://www.syntax.eco/public-api/v1/asset/{id}"
-    requests_headers = {
-        "Cookie": f".ROBLOSECURITY={AUTOSEARCH_COOKIE}"
-    }
+def parse_item_name_from_url(url):
     try:
-        response = requests.get(item_api, headers=requests_headers)
-        response.raise_for_status()
-
-        if response.status_code == 200:
-            data = response.json()
-            name = data.get("data", {}).get("name")
-            return name
-    except requests.exceptions.RequestException as e:
-        return "Unknown"
+        parsed_url = urlparse(url)
+        path = parsed_url.path
+        parts = path.split('/')
+        if len(parts) > 3:
+            item_name = parts[3].replace("-", " ")
+            return item_name
+    except Exception as e:
+        pass
+    return "Unknown"
 
 def status_update():
-    global logs, checks, bought, errors, account, autosearch_status, last_bought, last_detected
-    build = "Beta"
-    version = "2.0.0"
+    global logs, checks, bought, errors, account, autosearch_status, last_bought, last_detected, version
+    build = "Public"
 
     while True:
         print("""\033[38;5;69m
@@ -270,12 +271,14 @@ if __name__ == "__main__":
     process_thread = threading.Thread(target=process_new_ids)
     status_thread = threading.Thread(target=status_update)
     update_thread = threading.Thread(target=update_autosearch)
-    
+    account_thread = threading.Thread(target=update_account)
 
     process_thread.start()
     status_thread.start()
     update_thread.start()
+    account_thread.start()
 
     process_thread.join()
     status_thread.join()
     update_thread.join()
+    account_thread.join()
