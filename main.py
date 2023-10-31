@@ -16,7 +16,7 @@ import socket
 with open('settings.json', 'r') as settings_file:
     settings = json.load(settings_file)
 
-version = "2.0.0"
+version = "2.1.0"
 AUTOSEARCH_COOKIE = settings["AUTOSEARCH_COOKIE"]
 BUY_COOKIE = settings["BUY_COOKIE"]
 CHECK_TIME = settings["CHECK_TIME"]
