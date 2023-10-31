@@ -1,5 +1,10 @@
-bs4==0.0.1
-datetime==4.3
-json==99.9.9
+json==2.0.9
 requests==2.26.0
-selenium==3.141.0
+time==0.1
+os==0.1
+beautifulsoup4==4.10.0
+selenium==4.1.0
+urllib3==2.1.0
+threading==0.1
+datetime==4.3
+socket==0.1
